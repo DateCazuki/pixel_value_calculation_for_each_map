@@ -38,13 +38,13 @@ def mean_record(rawfile,blocks_epa,blocks_opb_h,blocks_opb_v,txtfile):
         for y in range(5):
             for x in range(5):
                 print(np.mean(blocks_epa[x,y]),end='\t',file=f)
-                
+
         for y in range(5):
             print(np.mean(blocks_opb_h[0,y]),end='\t',file=f)
-        
+
         for x in range(5):
             print(np.mean(blocks_opb_v[x,0]),end='\t',file=f)
-        
+
         print('',file=f)
 
 def item_record(txtfile):
@@ -52,23 +52,23 @@ def item_record(txtfile):
         print('RawFileName', end='\t', file=f)
         for y in range(5):
             for x in range(5):
-                print('blocks_epa[{}{}]'.format(x,y),end='\t',file=f)
-                
+                print('blocks_epa[{}{}]'.format(x+1,y+1),end='\t',file=f)
+
         for y in range(5):
-                print('blocks_opb_h[{}{}]'.format(x,y),end='\t',file=f)
-        
+                print('blocks_opb_h[{}{}]'.format(0,y+1),end='\t',file=f)
+
         for x in range(5):
-                print('blocks_opb_v[{}{}]'.format(x,y),end='\t',file=f)
-        
+                print('blocks_opb_v[{}{}]'.format(x+1,0),end='\t',file=f)
+
         print('',file=f)
-        
-        
+
+
 def patch_pixval(rawfile):
     opb_h,opb_v,epa = area_split(rawfile)
     opb_h_r,opb_h_g,opb_h_b = debayer(opb_h)
     opb_v_r,opb_v_g,opb_v_b = debayer(opb_v)
     epa_r,  epa_g,  epa_b   = debayer(epa)
-        
+
     blocks_opb_h_r = skimage.util.view_as_blocks(opb_h_r, (opb_h_r.shape[0], opb_h_r.shape[1]//5))
     blocks_opb_h_g = skimage.util.view_as_blocks(opb_h_g, (opb_h_g.shape[0], opb_h_g.shape[1]//5))
     blocks_opb_h_b = skimage.util.view_as_blocks(opb_h_b, (opb_h_b.shape[0], opb_h_b.shape[1]//5))
@@ -76,7 +76,7 @@ def patch_pixval(rawfile):
     blocks_opb_v_r = skimage.util.view_as_blocks(opb_v_r, (opb_v_r.shape[0]//5, opb_v_r.shape[1]))
     blocks_opb_v_g = skimage.util.view_as_blocks(opb_v_g, (opb_v_g.shape[0]//5, opb_v_g.shape[1]))
     blocks_opb_v_b = skimage.util.view_as_blocks(opb_v_b, (opb_v_b.shape[0]//5, opb_v_b.shape[1]))
-    
+
     blocks_epa_r   = skimage.util.view_as_blocks(epa_r, (epa_r.shape[0]//5, epa_r.shape[1]//5))
     blocks_epa_g   = skimage.util.view_as_blocks(epa_g, (epa_g.shape[0]//5, epa_g.shape[1]//5))
     blocks_epa_b   = skimage.util.view_as_blocks(epa_b, (epa_b.shape[0]//5, epa_b.shape[1]//5))
@@ -93,12 +93,8 @@ def ProgressiveScan(path):
         for rawfile in files:
             if rawfile.endswith('.raw'):
                 patch_pixval(rawfile)
-            
+
 ProgressiveScan(CurrentDirPath)
 
 
 # In[ ]:
-
-
-
-
